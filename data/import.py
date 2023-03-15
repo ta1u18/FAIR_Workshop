@@ -69,4 +69,3 @@ with open('../files/reliable_pka_data.csv', newline='') as csvfile:
         for mtd in mtds:
             DataMethods.objects.create(data_id=d, method_id=Methods.objects.get(code=mtd.strip()))
         print('data point ' + uid + ' added')
-
