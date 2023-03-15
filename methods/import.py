@@ -18,6 +18,6 @@ with open('../files/methods.csv', newline='') as csvfile:
         vperr = row[1]
         vsupp = row[2]
         vserj = row[3]
-        m = Methods(code=vcode, perrin=vperr, perrinsupp=vsupp, serjeant=vserj)
+        m = Methods(code=vcode, perrin=vperr, perrin_supp=vsupp, serjeant=vserj)
         m.save()
         print('row ' + vcode + ' ingested')
