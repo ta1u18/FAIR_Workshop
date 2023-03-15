@@ -1,0 +1,87 @@
+<!-- incoming variables from publications (volumes) controller: vol, syss -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Data View {% endblock %}
+{% block content %}
+    <div class="row pt-3">
+        <h4>pKa/pKb data for {{ sub.name }}</h4>
+        <div class="col-md-8">
+            <div class="card card-success">
+                <div class="card-header h4 m-0">Substance</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <script type="text/javascript" src="/static/js/jsmol/JSmol.min.js"></script>
+                            <script type="text/javascript" src="/static/js/jsmol/js/JSmolJSV.js"></script>
+                            <script type='text/javascript'>
+                                jsvApplet = "jsvApplet0"
+                                $(document).ready(function(){
+                                    $("#jsmol0").html(Jmol.getAppletHtml("jsmol0", Info0));
+                                });
+                                jmol_isReady = function(applet) {
+                                    Jmol._getElement(applet, "appletdiv").style.border = "1px solid #D0D0D0"
+                                }
+                                Info0 = {
+                                    width: "300",
+                                    height: "200",
+                                    src: "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/inchikey/{{ sub.inchikey }}/SDF?record_type=2d",
+                                    debug: false,
+                                    color: "#EEEEEE",
+                                    addSelectionOptions: false,
+                                    serverURL: "https://osdb.stuchalk.domains.unf.edu/js/jsmol/php/jsmol.php",
+                                    use: "HTML5",
+                                    coverImage: "",
+                                    coverScript: "",
+                                    deferApplet: false,
+                                    deferUncover: false,
+                                    jarPath: "java",
+                                    j2sPath: "/static/js/jsmol/j2s",
+                                    jarFile: "JmolApplet.jar",
+                                    isSigned: false,
+                                    readyFunction: jmol_isReady
+                                }
+                            </script>
+                            <div id="jsmol0" class="mb-3 center-block"></div>
+                        </div>
+                        <div class="col-6">
+                            <ul>
+                                <li>Formula: {{ sub.formula }}</li>
+                                <li>Molar Mass: {{ sub.molweight }}</li>
+                                <li>IUPAC Name: {{ sub.iupacname }}</li>
+                                <li>InChIKey: {{ sub.inchikey }}</li>
+                                <li>SMILES: {{ sub.smiles }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-default">
+                <div class="card-header h4 m-0">Reference</div>
+                <div class="card-body responsivediv200">
+                    {% if ref.doi %}
+                        <p><a href="https://doi.org/{{ ref.doi }}" target="_blank">{{ ref.citation }}</a></p>
+                    {% else %}
+                        <p>{{ ref.citation }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="card card-default">
+                <div class="card-header h4 m-0">Data
+                <a type="button" href="/data/scidata/{{ sub.id }}/{{ ref.id }}" class="btn btn-danger btn-sm float-end">JSON-LD</a>
+                <a type="button" href="/data/json/{{ sub.id }}/{{ ref.id }}" class="btn btn-success btn-sm float-end">JSON</a>
+                </div>
+                <div class="list-group responsivediv200 m-0">
+                    {% for datum in data %}
+                        <li class="list-group-item item">
+                            Value: {{ datum.pka_value }} (Type: {{ datum.pka_type }}, Temperature: {{ datum.temp }} °C, Remarks: {{ datum.remarks }} )
+                        </li>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

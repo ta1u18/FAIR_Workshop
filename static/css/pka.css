@@ -1,0 +1,5 @@
+.card-responsive {
+    max-height: calc(100vh - 150px);
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+}
